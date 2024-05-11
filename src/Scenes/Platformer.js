@@ -108,10 +108,13 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.body.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.resetFlip();
             my.sprite.player.anims.play('walk', true);
-            if(my.sprite.player.body.velocity.x < -200 ){
-                this.cameras.main.startFollow(my.sprite.player, true, 1, 0.25, 100, 0);
+            if(this.smoothness < 0){
+                this.smoothness += 4;
             }
-            
+            if(this.smoothness < 200){    
+                this.smoothness += 1;
+                this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25, this.smoothness, 0);
+            }
 
         } else if(cursors.right.isDown) {
             // TODO: have the player accelerate to the right
@@ -121,9 +124,14 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.body.setAccelerationX(this.ACCELERATION);
             my.sprite.player.setFlip(true, false);
             my.sprite.player.anims.play('walk', true);
-            if(my.sprite.player.body.velocity.x > 200 ){
-                this.cameras.main.startFollow(my.sprite.player, true, 1, 0.25, -100, 0);
+            if(this.smoothness > 0){
+                this.smoothness -= 4;
             }
+            if(this.smoothness > -200){    
+                this.smoothness -= 1;
+                this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25, this.smoothness, 0);
+            }
+            
             
 
         } else {
